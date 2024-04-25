@@ -9,7 +9,7 @@ namespace Presentations.Controllers
     [ApiController]
     public class UsuarioController
     {
-        private IServUsuario _servUsuario;
+        private readonly IServUsuario _servUsuario;
 
         public UsuarioController(IServUsuario servUsuario)
         {
@@ -24,7 +24,7 @@ namespace Presentations.Controllers
                 var usuarios = _servUsuario.BuscarTodos();
 
                 var dtos = usuarios.Select(usuario => MostrarUsuarioDTO.ToDto(usuario)).ToList();
-                return Ok();
+                return Ok(dtos);
             }
             catch (Exception e)
             {
