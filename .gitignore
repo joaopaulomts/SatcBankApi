@@ -1,0 +1,74 @@
+# Arquivos bin e obj
+**/[Bb]in/
+**/[Oo]bj/
+**/[Ll]og/
+
+# Arquivos de build
+*.psess
+*.vsp
+*.vspx
+*.[Cc]ache
+*.user
+*.suo
+*.userprefs
+*.booproj
+*.pidb
+*.tlog
+*.tmproj
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.sdf
+*.sbr
+*.opensdf
+*.unsuccessfulbuild
+*.csprojResolveAssemblyReference.cache
+
+# Arquivos de pacotes
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nupkg
+# Os arquivos de cache do nuget não devem ser excluídos porque podem ser necessários em CI
+#!**/[Pp]ackages/cache/
+#!**/[Pp]ackages/*/src/
+#!**/[Pp]ackages/specs/
+
+# Arquivos de banco de dados SQL Server
+*.mdf
+*.ldf
+*.ndf
+
+# Arquivos de backup
+*_backup.*
+*.[Bb]ak
+*.[Bb]k?
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.t
+
+# Outros arquivos do sistema de arquivos
+Thumbs.db
+Desktop.ini
+
+# Arquivos específicos do IDE (JetBrains Rider)
+.idea/
+
+# Arquivos de configuração e de ambiente
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+
+# Arquivos de log
+*.log
+
+# Arquivos gerados durante a execução
+*.exe
+*.dll
+*.so
+*.dylib
+*.testadapter
+*.testlog
