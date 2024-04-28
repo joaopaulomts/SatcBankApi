@@ -1,8 +1,9 @@
 using Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repositories;
 
-public class RepoUsuario : IRepo<Usuario>
+public class RepoUsuario : IRepoUsuario
 {
     private readonly DataContext _dataContext;
 
@@ -18,9 +19,14 @@ public class RepoUsuario : IRepo<Usuario>
         return usuarios;
     }
 
+    public Usuario BuscarPorCpf(string cpf)
+    {
+        return _dataContext.Usuario.FirstOrDefault(u => u.Cpf == cpf);
+    }
+
     public Usuario BuscarPorId(int id)
     {
-        var usuario = _dataContext.Usuario.Single(p => p.Id == id);
+        var usuario = _dataContext.Usuario.Find(id);
 
         return usuario;
     }
@@ -33,11 +39,10 @@ public class RepoUsuario : IRepo<Usuario>
         return usuario;
     }
 
-    public Usuario Editar(Usuario usuario)
+    public void Editar(Usuario usuario)
     {
+        _dataContext.Entry(usuario).State = EntityState.Modified;
         _dataContext.SaveChanges();
-
-        return usuario;
     }
 
     public void Remover(Usuario usuario)

@@ -2,7 +2,7 @@ using Entities;
 
 namespace Repositories;
 
-public class RepoTransferencia : IRepo<Transferencia>
+public class RepoTransferencia : IRepoTransferencia
 {
     private readonly DataContext _dataContext;
 
@@ -20,7 +20,7 @@ public class RepoTransferencia : IRepo<Transferencia>
 
     public Transferencia BuscarPorId(int id)
     {
-        var transferencia = _dataContext.Transferencia.Single(p => p.Id == id);
+        var transferencia = _dataContext.Transferencia.Find(id);
 
         return transferencia;
     }
@@ -33,11 +33,9 @@ public class RepoTransferencia : IRepo<Transferencia>
         return transferencia;
     }
 
-    public Transferencia Editar(Transferencia transferencia)
+    public void Editar(Transferencia transferencia)
     {
         _dataContext.SaveChanges();
-
-        return transferencia;
     }
 
     public void Remover(Transferencia transferencia)

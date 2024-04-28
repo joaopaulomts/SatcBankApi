@@ -7,4 +7,9 @@ public class Transferencia : IEntity
     public decimal Valor { get; set; }
     public Usuario UsuarioOrigem { get; set; }
     public Usuario UsuarioDestino { get; set; }
+
+    public Transferencia()
+    {
+        Data = DateTime.Now;
+    }
 }

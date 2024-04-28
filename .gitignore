@@ -3,6 +3,9 @@
 **/[Oo]bj/
 **/[Ll]og/
 
+# SQLite
+*.db
+
 # Arquivos de build
 *.psess
 *.vsp

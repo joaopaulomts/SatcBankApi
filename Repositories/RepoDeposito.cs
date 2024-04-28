@@ -2,7 +2,7 @@ using Entities;
 
 namespace Repositories;
 
-public class RepoDepositvo : IRepo<Deposito>
+public class RepoDepositvo : IRepoDeposito
 {
     private readonly DataContext _dataContext;
 
@@ -20,7 +20,7 @@ public class RepoDepositvo : IRepo<Deposito>
 
     public Deposito BuscarPorId(int id)
     {
-        var deposito = _dataContext.Deposito.Single(p => p.Id == id);
+        var deposito = _dataContext.Deposito.Find(id);
 
         return deposito;
     }
@@ -33,11 +33,9 @@ public class RepoDepositvo : IRepo<Deposito>
         return deposito;
     }
 
-    public Deposito Editar(Deposito deposito)
+    public void Editar(Deposito deposito)
     {
         _dataContext.SaveChanges();
-
-        return deposito;
     }
 
     public void Remover(Deposito deposito)

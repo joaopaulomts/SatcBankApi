@@ -1,50 +1,126 @@
-using Entities;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 using Services.DTO;
 
-namespace Presentations.Controllers
+namespace Presentations.Controllers;
+
+[Route("api/usuarios")]
+[ApiController]
+public class UsuarioController : ControllerBase
 {
-    [Route("api/[Controller]")]
-    [ApiController]
-    public class UsuarioController
+    private readonly IServUsuario _servUsuario;
+
+    public UsuarioController(IServUsuario servUsuario)
     {
-        private readonly IServUsuario _servUsuario;
+        _servUsuario = servUsuario;
+    }
 
-        public UsuarioController(IServUsuario servUsuario)
+    [HttpGet]
+    public IActionResult BuscarTodos()
+    {
+        try
         {
-            _servUsuario = servUsuario;
+            var usuarios = _servUsuario.BuscarTodos();
+            var dtos = usuarios.Select(usuario => MostrarUsuarioDTO.ToDto(usuario)).ToList();
+
+            return Ok(dtos);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [Route("/api/usuarios/{id}")]
+    [HttpGet]
+    public IActionResult BuscarPorId(int id)
+    {
+        try
+        {
+            var usuario = _servUsuario.BuscarPorId(id);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(usuario);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpPost]
+    public IActionResult Inserir([FromBody] EditarUsuarioDTO dto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
         }
 
-        [HttpGet]
-        public ActionResult BuscarTodos()
+        try
         {
-            try
-            {
-                var usuarios = _servUsuario.BuscarTodos();
+            var usuario = EditarUsuarioDTO.ToEntity(dto);
+            var usuarioInserido = _servUsuario.Inserir(usuario);
 
-                var dtos = usuarios.Select(usuario => MostrarUsuarioDTO.ToDto(usuario)).ToList();
-                return Ok(dtos);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return Ok(usuarioInserido);
+        }
+        catch (Exception e)
+        {
+            return new BadRequestObjectResult( new { error = e.Message });
+        }
+    }
+
+    [Route("/api/usuarios/{id}")]
+    [HttpPut]
+    public IActionResult Editar(int id, [FromBody] EditarUsuarioDTO usuarioFromBody)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
         }
 
-        [HttpPost]
-        public ActionResult Inserir(Usuario usuario)
+        try
         {
-            try
-            {
-                _servUsuario.Inserir(usuario);
+           var usuario = _servUsuario.BuscarPorId(id);
 
-                return Ok();
-            }
-            catch (Exception e)
+           if (usuario == null)
+           {
+               return NotFound();
+           }
+
+           _servUsuario.Editar(usuario, usuarioFromBody);
+
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return new BadRequestObjectResult( new { error = e.Message });
+        }
+    }
+
+    [Route("/api/usuarios/{id}")]
+    [HttpDelete]
+    public IActionResult Remover(int id)
+    {
+        try
+        {
+            var usuario = _servUsuario.BuscarPorId(id);
+
+            if (usuario == null)
             {
-                return BadRequest(e.Message);
+                return NotFound();
             }
+
+            _servUsuario.Remover(usuario);
+
+            return NoContent();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
         }
     }
 }
